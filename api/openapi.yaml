@@ -1,0 +1,201 @@
+openapi: 3.0.3
+info:
+  title: Sample Vercel Go OpenAPI Doc
+  description: |-
+    This is the Sample Vercel Go API documentation.
+  termsOfService: https://localhost:8080
+  contact:
+    email: kotaro.otaka@example.com
+  license:
+    name: Apache 2.0
+  version: 0.0.1
+externalDocs:
+  description: Find out more about Swagger
+  url: http://localhost:8080
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: OpenAPI
+    description: OpenAPI
+  - name: Todo
+    description: Todo
+paths:
+  /:
+    get:
+      tags:
+        - OpenAPI
+      summary: OpenAPI
+      description: OpenAPI
+      operationId: api
+      responses:
+        "200":
+          description: OK
+          content:
+            application/yaml:
+              schema:
+                type: string
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseSchema"
+  /todo:
+    get:
+      tags:
+        - Todo
+      summary: Todo
+      description: Todo
+      operationId: listTodo
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  todos:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/TodoSchema"
+                required:
+                  - todos
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseSchema"
+    post:
+      tags:
+        - Todo
+      summary: Todo
+      description: Todo
+      operationId: createTodo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+              required:
+                - title
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  todo:
+                    $ref: "#/components/schemas/TodoSchema"
+                required:
+                  - todo
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseSchema"
+  /todo/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      tags:
+        - Todo
+      summary: Todo
+      description: Todo
+      operationId: getTodo
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  todo:
+                    $ref: "#/components/schemas/TodoSchema"
+    put:
+      tags:
+        - Todo
+      summary: Todo
+      description: Todo
+      operationId: updateTodo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                completed:
+                  type: boolean
+                  default: false
+              required:
+                - title
+                - completed
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  todo:
+                    $ref: "#/components/schemas/TodoSchema"
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseSchema"
+    delete:
+      tags:
+        - Todo
+      summary: Todo
+      description: Todo
+      operationId: deleteTodo
+      responses:
+        "204":
+          description: No Content
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseSchema"
+components:
+  schemas:
+    ErrorResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    TodoSchema:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        completed:
+          type: boolean
+          default: false
+      required:
+        - id
+        - title
+        - completed

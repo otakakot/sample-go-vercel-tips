@@ -1,0 +1,40 @@
+{
+    "build": {
+        "env": {
+            "GO_BUILD_FLAGS": "-ldflags '-s -w'"
+        }
+    },
+    "routes": [
+        {
+            "src": "/",
+            "dest": "/api",
+            "methods": [
+                "GET"
+            ]
+        },
+        {
+            "src": "/todos",
+            "dest": "/api/todos",
+            "methods": [
+                "GET",
+                "POST"
+            ]
+        },
+        {
+            "src": "/todos(?<query>[^/]*)",
+            "dest": "/api/tosos",
+            "methods": [
+                "GET"
+            ]
+        },
+        {
+            "src": "/todos/(?<id>[^/]*)",
+            "dest": "/api/todos/id",
+            "methods": [
+                "GET",
+                "PUT",
+                "DELETE"
+            ]
+        }
+    ]
+}
